@@ -1,49 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, Keyboard } from 'react-native';
 
 export default function InputSection({ onSubmit, isLoading }) {
   const [text, setText] = useState('');
 
   const handleSubmit = () => {
     if (text.trim().length === 0) return;
+    Keyboard.dismiss();
     onSubmit(text);
   };
 
   const isDisabled = isLoading || text.trim().length === 0;
 
   return (
-    <View className="mb-0">
+    <View className="w-full flex-col gap-4">
       <TextInput
-        className="bg-transparent border-[3px] border-black dark:border-white text-black dark:text-white p-5 min-h-[180px] max-h-[300px] mb-4 text-lg font-medium"
+        className="bg-white border-[2px] border-black/10 text-black p-6 min-h-[160px] max-h-[300px] text-[17px] font-medium w-full rounded-2xl shadow-sm"
         multiline
-        placeholder="Paste chaotic text..."
-        placeholderTextColor="#9ca3af"
+        placeholder="Paste your raw, messy notes..."
+        placeholderTextColor="#a1a1aa"
         value={text}
         onChangeText={setText}
         textAlignVertical="top"
         editable={!isLoading}
-        style={{ borderRadius: 0 }} // Hard corners for minimalist feel
       />
       
       <TouchableOpacity
-        className={`p-5 h-16 flex-row justify-center items-center active:scale-95 ${
+        className={`w-full h-16 flex-row justify-center items-center active:scale-95 rounded-2xl ${
           isDisabled 
-            ? 'bg-gray-200 dark:bg-gray-800 border-[3px] border-gray-200 dark:border-gray-800' 
-            : 'bg-black dark:bg-white border-[3px] border-black dark:border-white'
+            ? 'bg-gray-100 border-[2px] border-black/5' 
+            : 'bg-black border-[2px] border-black'
         }`}
         onPress={handleSubmit}
         disabled={isDisabled}
         activeOpacity={0.9}
-        style={{ borderRadius: 0 }}
       >
         {isLoading ? (
-            <ActivityIndicator color={isDisabled ? "gray" : "#9ca3af"} className="mr-3" />
+            <ActivityIndicator color={isDisabled ? "gray" : "#52525b"} className="mr-3" />
         ) : null}
         
-        <Text className={`font-black text-lg tracking-widest uppercase ${
-          isDisabled ? 'text-gray-400 dark:text-gray-600' : 'text-white dark:text-black'
+        <Text className={`font-black text-[13px] tracking-[0.15em] uppercase ${
+          isDisabled ? 'text-gray-400' : 'text-white'
         }`}>
-          {isLoading ? 'Processing' : 'Analyze'}
+          {isLoading ? 'Processing' : 'Analyze Data'}
         </Text>
       </TouchableOpacity>
     </View>
